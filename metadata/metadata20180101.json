@@ -1,0 +1,107 @@
+{
+  "galleryEndpoint": "https://gallery.azure.com/",
+  "graphEndpoint": "https://graph.windows.net/",
+  "portalEndpoint": "https://portal.azure.com/",
+  "graphAudience": "https://graph.windows.net/",
+  "authentication": {
+    "loginEndpoint": "https://login.microsoftonline.com/",
+    "audiences": [
+      "https://management.core.windows.net/",
+      "https://management.azure.com/"
+    ],
+    "tenant": "common",
+    "identityProvider": "AAD"
+  },
+  "cloudEndpoint": {
+    "public": {
+      "endpoint": "management.azure.com",
+      "locations": [
+        "australiacentral",
+        "australiacentral2",
+        "australiaeast",
+        "australiasoutheast",
+        "brazilsouth",
+        "brazilsoutheast",
+        "brazilus",
+        "canadacentral",
+        "canadaeast",
+        "centralindia",
+        "centralus",
+        "centraluseuap",
+        "eastasia",
+        "eastus",
+        "eastus2",
+        "eastus2euap",
+        "francecentral",
+        "francesouth",
+        "germanynorth",
+        "germanywestcentral",
+        "japaneast",
+        "japanwest",
+        "jioindiacentral",
+        "jioindiawest",
+        "koreacentral",
+        "koreasouth",
+        "northcentralus",
+        "northeurope",
+        "norwayeast",
+        "norwaywest",
+        "qatarcentral",
+        "southafricanorth",
+        "southafricawest",
+        "southcentralus",
+        "southeastasia",
+        "southindia",
+        "swedencentral",
+        "swedensouth",
+        "switzerlandnorth",
+        "switzerlandwest",
+        "uaecentral",
+        "uaenorth",
+        "uksouth",
+        "ukwest",
+        "westcentralus",
+        "westeurope",
+        "westindia",
+        "westus",
+        "westus2",
+        "westus3",
+        "israelcentral",
+        "italynorth",
+        "malaysiasouth",
+        "polandcentral",
+        "taiwannorth",
+        "taiwannorthwest"
+      ]
+    },
+    "chinaCloud": {
+      "endpoint": "management.chinacloudapi.cn",
+      "locations": [
+        "chinaeast",
+        "chinanorth",
+        "chinanorth2",
+        "chinaeast2",
+        "chinanorth3",
+        "chinaeast3"
+      ]
+    },
+    "usGovCloud": {
+      "endpoint": "management.usgovcloudapi.net",
+      "locations": [
+        "usgovvirginia",
+        "usgoviowa",
+        "usdodeast",
+        "usdodcentral",
+        "usgovtexas",
+        "usgovarizona"
+      ]
+    },
+    "germanCloud": {
+      "endpoint": "management.microsoftazure.de",
+      "locations": [
+        "germanycentral",
+        "germanynortheast"
+      ]
+    }
+  }
+}

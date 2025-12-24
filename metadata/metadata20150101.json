@@ -1,0 +1,12 @@
+{
+  "galleryEndpoint": "https://gallery.azure.com/",
+  "graphEndpoint": "https://graph.windows.net/",
+  "portalEndpoint": "https://portal.azure.com/",
+  "authentication": {
+    "loginEndpoint": "https://login.microsoftonline.com/",
+    "audiences": [
+      "https://management.core.windows.net/",
+      "https://management.azure.com/"
+    ]
+  }
+}
