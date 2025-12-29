@@ -16,16 +16,6 @@ const (
 	serviceName = "workload-identity-adal-bridge"
 )
 
-type tokenResponse struct {
-	AccessToken  string `json:"access_token"`
-	ClientID     string `json:"client_id"`
-	Resource     string `json:"resource"`
-	TokenType    string `json:"token_type"`
-	ExpiresIn    int64  `json:"expires_in"`
-	ExpiresOn    int64  `json:"expires_on"`
-	ExtExpiresIn int64  `json:"ext_expires_in"`
-}
-
 func main() {
 	logger.Log = hclog.New(&hclog.LoggerOptions{
 		Name:   serviceName,
