@@ -137,6 +137,11 @@ func (s *Server) handler() (ret *http.ServeMux) {
 
 func (s *Server) acquireAccessToken(resource, scope, clientId string) (body []byte, status int, err error) {
 	tokResp, err := identityclient.AccessToken(resource, scope, clientId)
+	if err != nil {
+		logger.Error(fmt.Sprintf("acquiring access token: %v", err))
+		return nil, http.StatusInternalServerError, err
+	}
+
 	if err = json.Unmarshal(body, &tokResp); err != nil {
 		logger.Error(fmt.Sprintf("unmarshalling response from token service: %v", err), "response", string(body))
 		return nil, http.StatusInternalServerError, err
