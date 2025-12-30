@@ -12,7 +12,7 @@ FROM alpine:latest
 RUN apk add --no-cache ca-certificates tzdata
 RUN addgroup -S appuser
 RUN adduser -S -G appuser -H -s /sbin/nologin appuser
-COPY --from=build --chown=appuser:appuser /app/workload-identity-adal-bridge /usr/bin/workload-identity-adal-bridge
+COPY --from=build --chown=appuser:appuser /app/workload-identity-adal-bridge /workload-identity-adal-bridge
 ADD metadata /metadata/
 USER appuser
-ENTRYPOINT ["/usr/bin/workload-identity-adal-bridge"]
+ENTRYPOINT ["/workload-identity-adal-bridge", "serve"]

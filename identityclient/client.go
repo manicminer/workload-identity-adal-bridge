@@ -1,6 +1,7 @@
 package identityclient
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -23,7 +24,7 @@ type TokenResponse struct {
 	ExtExpiresIn int64  `json:"ext_expires_in"`
 }
 
-func AccessToken(resource, scope, clientId string) (*TokenResponse, error) {
+func AccessToken(ctx context.Context, resource, scope, clientId string) (*TokenResponse, error) {
 	azureTokenService := os.Getenv("AZURE_AUTHORITY_HOST")
 	if azureTokenService == "" {
 		logger.Error("environment variable `AZURE_AUTHORITY_HOST` is not set")
@@ -57,7 +58,7 @@ func AccessToken(resource, scope, clientId string) (*TokenResponse, error) {
 
 	if scope == "" {
 		if resource != "" {
-			scope = fmt.Sprintf("%s/.default", resource)
+			scope = fmt.Sprintf("%s/.default", strings.TrimSuffix(resource, "/"))
 		} else {
 			return nil, fmt.Errorf("`scope` or `resource` must be specified by the calling client")
 		}
@@ -71,7 +72,7 @@ func AccessToken(resource, scope, clientId string) (*TokenResponse, error) {
 	reqBody.Set("grant_type", "client_credentials")
 	reqBody.Set("scope", scope)
 
-	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("%s/%s/oauth2/v2.0/token", azureTokenService, tenantId), strings.NewReader(reqBody.Encode()))
+	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, fmt.Sprintf("%s/%s/oauth2/v2.0/token", azureTokenService, tenantId), strings.NewReader(reqBody.Encode()))
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 

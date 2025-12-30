@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/manicminer/workload-identity-adal-bridge/identityclient"
+	"github.com/manicminer/workload-identity-adal-bridge/metadataclient"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var clientCmd = &cobra.Command{
@@ -20,6 +21,8 @@ var tokenCmd = &cobra.Command{
 	Use:   "token",
 	Short: "Acquire an access token",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		serviceUrl := viper.GetString("url")
+
 		resource, err := cmd.Flags().GetString("resource")
 		if err != nil {
 			return err
@@ -35,7 +38,7 @@ var tokenCmd = &cobra.Command{
 			return err
 		}
 
-		tokResp, err := identityclient.AccessToken(resource, scope, clientId)
+		tokResp, err := metadataclient.AccessToken(cmd.Context(), serviceUrl, resource, scope, clientId)
 		if err != nil {
 			return err
 		}
@@ -46,14 +49,20 @@ var tokenCmd = &cobra.Command{
 }
 
 func init() {
+	tokenCmd.Flags().String("url", defaultServiceUrl, "URL for the metadata service")
+	viper.BindPFlag("url", tokenCmd.Flags().Lookup("url"))
+
 	tokenCmd.Flags().String("client-id", "", "client ID")
 	if err := tokenCmd.MarkFlagRequired("client-id"); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+
 	tokenCmd.Flags().String("resource", "", "resource URL")
 	tokenCmd.Flags().String("scope", "", "scope URI")
+
 	tokenCmd.MarkFlagsOneRequired("resource", "scope")
 	tokenCmd.MarkFlagsMutuallyExclusive("resource", "scope")
+
 	clientCmd.AddCommand(tokenCmd)
 }

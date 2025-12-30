@@ -4,12 +4,14 @@ import (
 	"context"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/manicminer/workload-identity-adal-bridge/cmd"
 	"github.com/manicminer/workload-identity-adal-bridge/internal/logger"
+	"github.com/spf13/viper"
 )
 
 const (
@@ -29,6 +31,10 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	ctx = context.WithValue(ctx, "stop", stop)
 	defer cancel()
+
+	viper.SetEnvPrefix("BRIDGE")
+	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+	viper.AutomaticEnv()
 
 	cmd.Execute(ctx)
 	os.Exit(0)

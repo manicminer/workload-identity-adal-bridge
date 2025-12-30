@@ -122,7 +122,7 @@ func (s *Server) handler() (ret *http.ServeMux) {
 		resource := q.Get("resource")
 		scope := q.Get("scope")
 
-		body, status, err := s.acquireAccessToken(resource, scope, clientId)
+		body, status, err := s.acquireAccessToken(r.Context(), resource, scope, clientId)
 		if err != nil {
 			w.WriteHeader(status)
 			fmt.Fprintf(w, `{"error":"%s", "resource": "%s", "scope: "%s", "clientId": "%s"}`, err, resource, scope, clientId)
@@ -135,8 +135,8 @@ func (s *Server) handler() (ret *http.ServeMux) {
 	return
 }
 
-func (s *Server) acquireAccessToken(resource, scope, clientId string) (body []byte, status int, err error) {
-	tokResp, err := identityclient.AccessToken(resource, scope, clientId)
+func (s *Server) acquireAccessToken(ctx context.Context, resource, scope, clientId string) (body []byte, status int, err error) {
+	tokResp, err := identityclient.AccessToken(ctx, resource, scope, clientId)
 	if err != nil {
 		logger.Error(fmt.Sprintf("acquiring access token: %v", err))
 		return nil, http.StatusInternalServerError, err
@@ -185,9 +185,5 @@ func (s *Server) loadMetadataFromFile(apiVersion string) ([]byte, int, error) {
 func (s *Server) logRequest(r *http.Request) {
 	body, _ := io.ReadAll(r.Body)
 	r.Body = io.NopCloser(bytes.NewReader(body))
-	params := ""
-	if r.URL != nil {
-		params = r.URL.RawQuery
-	}
-	logger.Info(fmt.Sprintf("received request: %s %s", r.Method, r.RequestURI), "content_type", r.Header.Get("Content-Type"), "params", params, "body", string(body))
+	logger.Info(fmt.Sprintf("received request: %s %s", r.Method, r.RequestURI), "content_type", r.Header.Get("Content-Type"), "body", string(body))
 }
