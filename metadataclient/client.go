@@ -70,7 +70,7 @@ func AccessToken(ctx context.Context, metadataUrl, resource, scope, clientId str
 
 	out := TokenResponse{}
 	if err = json.Unmarshal(body, &out); err != nil {
-		logger.Error(fmt.Sprintf("unmarshalling response from token service: %v", err), "response", string(body))
+		logger.Error(fmt.Sprintf("unmarshalling response from instance metadata service: %v", err), "response_body", string(body))
 		return nil, err
 	}
 

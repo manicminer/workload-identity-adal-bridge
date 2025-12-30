@@ -72,7 +72,9 @@ func AccessToken(ctx context.Context, resource, scope, clientId string) (*TokenR
 	reqBody.Set("grant_type", "client_credentials")
 	reqBody.Set("scope", scope)
 
-	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, fmt.Sprintf("%s/%s/oauth2/v2.0/token", azureTokenService, tenantId), strings.NewReader(reqBody.Encode()))
+	tokenUrl := fmt.Sprintf("%s/%s/oauth2/v2.0/token", strings.TrimSuffix(azureTokenService, "/"), tenantId)
+
+	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, tokenUrl, strings.NewReader(reqBody.Encode()))
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
@@ -96,7 +98,7 @@ func AccessToken(ctx context.Context, resource, scope, clientId string) (*TokenR
 
 	out := TokenResponse{}
 	if err = json.Unmarshal(body, &out); err != nil {
-		logger.Error(fmt.Sprintf("unmarshalling response from token service: %v", err), "response", string(body))
+		logger.Error(fmt.Sprintf("unmarshalling response from token service: %v", err), "response_body", string(body))
 		return nil, err
 	}
 

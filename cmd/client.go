@@ -37,6 +37,12 @@ var tokenCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		if v := os.Getenv("AZURE_CLIENT_ID"); clientId == "" && v != "" {
+			clientId = v
+		}
+		if clientId == "" {
+			return fmt.Errorf("unknown client ID, please specify using the `client-id` argument or the AZURE_CLIENT_ID environment variable")
+		}
 
 		tokResp, err := metadataclient.AccessToken(cmd.Context(), serviceUrl, resource, scope, clientId)
 		if err != nil {
@@ -53,11 +59,6 @@ func init() {
 	viper.BindPFlag("url", tokenCmd.Flags().Lookup("url"))
 
 	tokenCmd.Flags().String("client-id", "", "client ID")
-	if err := tokenCmd.MarkFlagRequired("client-id"); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-
 	tokenCmd.Flags().String("resource", "", "resource URL")
 	tokenCmd.Flags().String("scope", "", "scope URI")
 

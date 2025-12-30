@@ -142,11 +142,6 @@ func (s *Server) acquireAccessToken(ctx context.Context, resource, scope, client
 		return nil, http.StatusInternalServerError, err
 	}
 
-	if err = json.Unmarshal(body, &tokResp); err != nil {
-		logger.Error(fmt.Sprintf("unmarshalling response from token service: %v", err), "response", string(body))
-		return nil, http.StatusInternalServerError, err
-	}
-
 	out, err := json.Marshal(tokResp)
 	if err != nil {
 		logger.Error(fmt.Sprintf("marshalling response to client: %v", err), "token_response", fmt.Sprintf("%#v", tokResp))
