@@ -8,8 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var version = "development"
-
 var rootCmd = &cobra.Command{
 	Use:   serviceName,
 	Short: fmt.Sprintf("%s is a wrapper for ADAL-based managed service identity in AKS clusters using workload identity", serviceFriendlyName),

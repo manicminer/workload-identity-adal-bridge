@@ -14,6 +14,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+var version = "development"
+
 const (
 	serviceName = "workload-identity-adal-bridge"
 )
@@ -30,6 +32,7 @@ func main() {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	ctx = context.WithValue(ctx, "stop", stop)
+	ctx = context.WithValue(ctx, "version", version)
 	defer cancel()
 
 	viper.SetEnvPrefix("BRIDGE")

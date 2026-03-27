@@ -21,12 +21,14 @@ var serveCmd = &cobra.Command{
 
 		tlsCertPath := viper.GetString("tls-cert")
 		tlsKeyPath := viper.GetString("tls-key")
+		version := cmd.Context().Value("version").(string)
 
 		config := service.Server{
 			TLSCertPath:         tlsCertPath,
 			TLSKeyPath:          tlsKeyPath,
 			ServiceName:         serviceName,
 			ServiceFriendlyName: serviceFriendlyName,
+			ServiceVersion:      version,
 			HTTPPort:            &httpPort,
 			HTTPSPort:           httpsPort,
 		}

@@ -1,6 +1,5 @@
-ARG VERSION
-
 FROM golang:1.25 AS build
+ARG VERSION="latest"
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download

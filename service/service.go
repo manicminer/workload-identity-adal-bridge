@@ -26,6 +26,7 @@ type Server struct {
 
 	ServiceName         string
 	ServiceFriendlyName string
+	ServiceVersion      string
 
 	Addr      *string
 	HTTPPort  *int
@@ -72,7 +73,7 @@ func (s *Server) run(ctx context.Context, port int, tls bool) {
 		Handler: s.handler(),
 	}
 
-	logger.Info(fmt.Sprintf("%s listening", s.ServiceFriendlyName), "port", port, "tls", strconv.FormatBool(tls))
+	logger.Info(fmt.Sprintf("%s %s listening", s.ServiceFriendlyName, s.ServiceVersion), "port", port, "tls", strconv.FormatBool(tls))
 	wg.Go(func() {
 		if tls {
 			if err := server.ListenAndServeTLS(s.TLSCertPath, s.TLSKeyPath); err != nil && err != http.ErrServerClosed {
